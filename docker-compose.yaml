@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  #MongoDB
+  mongo_db:
+    container_name: database_container
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_db:/data/db
+
+  app:
+    build: .
+    ports:
+      - 9090:9090
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://mongo_db:27017/document-manager
+    depends_on:
+      - mongo_db
+
+volumes:
+  mongo_db: {}
